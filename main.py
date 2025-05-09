@@ -4,11 +4,13 @@ from tkinter import messagebox
 from conectar import conectar
 from telaadm import abrir_tela_admin
 from telabolsista import abrir_tela_bolsista
+import sys
+from pathlib import Path
 
 #função de login
 def login():
     nome = entrada_nome.get().strip() #strip remove espaços ' '
-   
+    senha = entrada_senha.get()
 
     conexao = conectar()
     if conexao:
@@ -27,16 +29,11 @@ def login():
             messagebox.showerror("Erro", "Usuário ou senha incorretos.") 
 
 # INTERFACE DE LOGIN
-
-from pathlib import Path
-
-# from tkinter import *
-# Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\samuel.viturino126\Desktop\BANCO DE DADOS\build\assets\frame0")
+ASSETS_PATH = OUTPUT_PATH / "build" / "assets" / "frame0"
 
 
 def relative_to_assets(path: str) -> Path:
