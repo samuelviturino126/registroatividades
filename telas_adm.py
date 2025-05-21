@@ -32,7 +32,7 @@ def abrirtelaadm():
         atividades_do_dia = "Erro"
 
     def voltar():
-        window1.destroy()
+        window_tela_adm.destroy()
         subprocess.run(["python", "tela_login.py"])
     
     #DESIGN
@@ -44,14 +44,14 @@ def abrirtelaadm():
         return ASSETS_PATH / Path(path)
 
 
-    window1 = Tk()
+    window_tela_adm = Tk()
 
-    window1.geometry("1440x846")
-    window1.configure(bg = "#FFFFFF")
+    window_tela_adm.geometry("1440x846")
+    window_tela_adm.configure(bg = "#FFFFFF")
 
 
     canvas1 = Canvas(
-        window1,
+        window_tela_adm,
         bg = "#FFFFFF",
         height = 846,
         width = 1440,
@@ -137,7 +137,7 @@ def abrirtelaadm():
     )
 
     button_voltar_image = PhotoImage(
-        file=relative_to_assets("button_1.png"))
+        file=relative_to_assets("button_voltar_adm.png"))
     button_voltar = Button(
         image=button_voltar_image,
         borderwidth=0,
@@ -153,12 +153,12 @@ def abrirtelaadm():
     )
 
     button_image_atividades_adm = PhotoImage(
-        file=relative_to_assets("button_2.png"))
+        file=relative_to_assets("button_atividades_adm.png"))
     button_atividades_adm = Button(
         image=button_image_atividades_adm,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: (window1.destroy(), tela_atividades()),
+        command=lambda: (window_tela_adm.destroy(), tela_atividades()),
         relief="flat"
     )
     button_atividades_adm.place(
@@ -169,7 +169,7 @@ def abrirtelaadm():
     )
 
     button_image_bolsistas_adm = PhotoImage(
-        file=relative_to_assets("button_3.png"))
+        file=relative_to_assets("button_bolsistas_adm.png"))
     button_bolsistas_adm = Button(
         image=button_image_bolsistas_adm,
         borderwidth=0,
@@ -185,7 +185,7 @@ def abrirtelaadm():
     )
 
     button_image_4 = PhotoImage(
-        file=relative_to_assets("button_4.png"))
+        file=relative_to_assets("button_relatorios_adm.png"))
     button_4 = Button(
         image=button_image_4,
         borderwidth=0,
@@ -235,8 +235,8 @@ def abrirtelaadm():
         fill="#000000",
         font=("Inter", 25 * -1)
     )
-    window1.resizable(True, True)
-    window1.mainloop()
+    window_tela_adm.resizable(True, True)
+    window_tela_adm.mainloop()
 
 def tela_atividades():
     conexao = conectar()
@@ -456,4 +456,4 @@ def tela_atividades():
     )
     windowtela_atividade.resizable(False, False)
     windowtela_atividade.mainloop()
-abrirtelaadm()
+    pass

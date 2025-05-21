@@ -81,7 +81,7 @@ canvas_login.create_text(
 )
 
 button_image_login_login = PhotoImage(
-    file=relative_to_assets("button_1.png"))
+    file=relative_to_assets("button_login.png"))
 button_login_login = Button(
     image=button_image_login_login,
     borderwidth=0,
@@ -97,7 +97,7 @@ button_login_login.place(
 )
 
 entry_senha_login = PhotoImage(
-    file=relative_to_assets("entry_1.png"))
+    file=relative_to_assets("entry_login.png"))
 entry_bg_1_login = canvas_login.create_image(
     434.5,
     256.0,
@@ -117,7 +117,7 @@ entrada_senha.place(
 )
 
 entry_nome_login = PhotoImage(
-    file=relative_to_assets("entry_2.png"))
+    file=relative_to_assets("entry_login_2.png"))
 entry_bg_2_login = canvas_login.create_image(
     434.5,
     154.0,
@@ -145,7 +145,7 @@ canvas_login.create_rectangle(
     outline="")
 
 button_fechar_login_image = PhotoImage(
-    file=relative_to_assets("button_2.png"))
+    file=relative_to_assets("button_fechar_login.png"))
 button_fechar_login = Button(
     image=button_fechar_login_image,
     borderwidth=0,
