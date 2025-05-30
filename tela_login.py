@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, messagebox
 from telas_adm import *
+from tela_bolsistas import *
 
 #Função de login
 def login():
@@ -22,7 +23,10 @@ def login():
                 window_login.destroy()
                 abrirtelaadm()
             else:
-                print("abrir_tela_bolsista(usuario[0], usuario[1]) #Aqui lançamos para a função tela do bolsista qual usuário está acessando essa tela e qual o respectivo id desse usuário")
+                window_login.destroy()
+                abrir_tela_bolsista(usuario[0], usuario[1])
+                
+                 #Aqui lançamos para a função tela do bolsista qual usuário está acessando essa tela e qual o respectivo id desse usuário")
         else:
             messagebox.showerror("Erro", "Usuário ou senha incorretos.") 
 

@@ -256,9 +256,8 @@ def tela_atividades():
 
     #DESIGN
     OUTPUT_PATH = Path(__file__).parent
-    ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\samuel.viturino126\Desktop\BANCODEDADOS_ORGANIZAR\telas_adm\tela_atividades\build\assets\frame0")
-
-
+    ASSETS_PATH = OUTPUT_PATH / "telas_adm" / "tela_atividades" / "build" / "assets" / "frame0"
+    
     def relative_to_assets(path: str) -> Path:
         return ASSETS_PATH / Path(path)
 
@@ -456,4 +455,4 @@ def tela_atividades():
     )
     windowtela_atividade.resizable(False, False)
     windowtela_atividade.mainloop()
-    pass
+abrirtelaadm()
