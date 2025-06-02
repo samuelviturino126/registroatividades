@@ -1,10 +1,17 @@
-from pathlib import Path
-import psycopg2
-from tkinter import * 
-from tkinter import ttk
 from conectar import conectar
-import subprocess
-from tkinter import messagebox
+import tkinter as tk
+from tkinter import *
+
+
+def obter_atividades():
+    conexao = conectar()
+    cursor = conexao.cursor()
+    cursor.execute("""
+        SELECT ap.nome
+        FROM atividade_por_usuarios AS au
+        JOIN atividades_padrao AS ap ON au.atividade_id = ap.id
+		WHERE au.usuario_id = %s;
+    """, usuario_id)
 
 #Função para mostrar as atividades cadastradas
 def abrir_tela_bolsista():

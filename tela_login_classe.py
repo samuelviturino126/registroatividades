@@ -2,8 +2,9 @@ from conectar import conectar
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, messagebox
 from pathlib import Path
 from tela_adm_classe import TelaAdministrador
+from tela_bolsistas_classe import TelaBolsista
 
-
+fonte_personalizada = ("Arial", 14, "bold")
 class TelaLogin:
     def __init__(self):
         # Caminhos
@@ -35,7 +36,7 @@ class TelaLogin:
         # Entradas
         self.entry_nome_img = PhotoImage(file=self.relative_to_assets("entry_login_2.png"))
         self.canvas.create_image(434.5, 154.0, image=self.entry_nome_img)
-        self.entrada_nome = Entry(bd=0, bg="#D9D9D9", fg="#000716", highlightthickness=0)
+        self.entrada_nome = Entry(bd=0, bg="#D9D9D9", fg="#000716", font=fonte_personalizada, highlightthickness=0)
         self.entrada_nome.place(x=205, y=133, width=459, height=40)
 
         self.entry_senha_img = PhotoImage(file=self.relative_to_assets("entry_login.png"))
@@ -76,7 +77,7 @@ class TelaLogin:
                 if usuario[2] == 'admin':
                     TelaAdministrador()
                 else:
-                    print("abrir_tela_bolsista(usuario[0], usuario[1])")
+                    TelaBolsista(usuario[0], usuario[1])
             else:
                 messagebox.showerror("Erro", "Usuário ou senha incorretos.")
 if __name__ == "__main__":

@@ -1,9 +1,12 @@
 import subprocess
 import tkinter as tk
-from tkinter import Tk, Canvas, PhotoImage, Button, Entry
+from tkinter import ttk
+from tkinter import *
 from conectar import conectar
 from datetime import datetime
 from pathlib import Path
+from tkinter import messagebox
+import psycopg2
 
 class TelaAdministrador:
     def __init__(self):
@@ -161,7 +164,7 @@ class TelaAdministrador:
             image=self.button_image_atividades_adm,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: (self.window_tela_adm.destroy(), self.tela_atividades()),
+            command=lambda: (self.window_tela_adm.destroy(), TelatividadesADM()),
             relief="flat"
         )
         self.button_atividades_adm.place(
@@ -229,8 +232,224 @@ class TelaAdministrador:
             self.atividades_do_dia = "Erro"
     def voltar(self):
         self.window_tela_adm.destroy()
-        subprocess.run(["python", "tela_login.py"])
+        subprocess.run(["python", "tela_login_classe.py"])
+    def graficos(self):
+        #coletar dados
+        #criar gráficos
+        pass
     
+class TelatividadesADM:
+    #caminhos
+    def __init__ (self):
+        OUTPUT_PATH = Path(__file__).parent
+        self.ASSETS_PATH = OUTPUT_PATH / "telas_adm" / "tela_atividades" / "build" / "assets" / "frame0"
+    #window
+        self.windowtela_atividade = Tk()
+        self.windowtela_atividade.geometry("770x640")
+        self.windowtela_atividade.configure(bg = "#FFFFFF")
+        self.windowtela_atividade.resizable(False, False)
+    #canvas
+        self.canvas_tela_atividade = Canvas(
+        self.windowtela_atividade,
+        bg = "#FFFFFF",
+        height = 640,
+        width = 770,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+    )
+        self.canvas_tela_atividade.place(x = 0, y = 0)
+    #textos
+        self.canvas_tela_atividade.create_text( 100.0, 241.0, anchor="nw", text="Descrição:", fill="#000000", font=("Inter", 25 * -1)
+        )
+
+        self.canvas_tela_atividade.create_text(
+            100.0,
+            151.0,
+            anchor="nw",
+            text="Setor:",
+            fill="#000000",
+            font=("Inter", 25 * -1)
+        )
+
+        self.canvas_tela_atividade.create_text(
+            420.0,
+            151.0,
+            anchor="nw",
+            text="Tipo:",
+            fill="#000000",
+            font=("Inter", 25 * -1)
+        )
+    #botões
+        self.tela_atividade_button_image_1 = PhotoImage(
+        file=self.relative_to_assets("button_1.png"))
+        self.tela_atividade_button_1 = Button(
+            image=self.tela_atividade_button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.cadastrar_atividade,
+            relief="flat"
+        )
+        self.tela_atividade_button_1.place(
+            x=548.0,
+            y=537.0,
+            width=119.0,
+            height=40.0
+        )
+
+        self.tela_atividade_button_image_2 = PhotoImage(
+            file=self.relative_to_assets("button_2.png"))
+        self.tela_atividade_button_2 = Button(
+            image=self.tela_atividade_button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: (self.windowtela_atividade.destroy(), TelaAdministrador()),
+            relief="flat"
+        )
+        self.tela_atividade_button_2.place(
+            x=690.0000010243959,
+            y=17.0,
+            width=54.833494044958115,
+            height=54.833494044958115
+        )
+    #restante
+        self.tela_atividade_entry_image_1 = PhotoImage(
+        file=self.relative_to_assets("entry_1.png"))
+        self.tela_atividade_entry_bg_1 = self.canvas_tela_atividade.create_image(
+        383.5,
+        121.0,
+        image=self.tela_atividade_entry_image_1
+    )
+        self.nome_nova_atividade = Entry( #aqui é uma entrada de uma única linha
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.nome_nova_atividade.place(
+            x=105.0,
+            y=101.0,
+            width=557.0,
+            height=40.0
+        )
+
+        self.tela_atividade_entry_image_2 = PhotoImage(
+            file=self.relative_to_assets("entry_2.png"))
+        self.tela_atividade_entry_bg_2 = self.canvas_tela_atividade.create_image(
+            383.0,
+            383.0,
+            image=self.tela_atividade_entry_image_2
+        )
+        self.tela_atividade_entry_2 = Text( #aqui eu estou criando minha área de texto
+            bd=0, 
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.tela_atividade_entry_2.place( #aqui eu posiciono a área que o texto vai ficar
+            x=105.0,
+            y=286.0,
+            width=556.0,
+            height=194.0
+        )
+
+        self.tela_atividade_image_image_1 = PhotoImage(
+            file=self.relative_to_assets("image_1.png"))
+        self.tela_atividade_image_1 = self.canvas_tela_atividade.create_image(
+            223.0,
+            206.0,
+            image=self.tela_atividade_image_image_1
+        )
+        #tamanho da combobox igual o da janela acima 
+        self.combobox_width = 250
+        self.combobox_height = 45
+
+    # coordenadas para centralizar no ponto (223, 206)
+        self.combobox_x = 223 - self.combobox_width / 2
+        self.combobox_y = 206 - self.combobox_height / 2
+        #configuração da combobox
+        self.setor_atividade = ttk.Combobox(
+            self.windowtela_atividade,
+            values=["Processamento Técnico", "Reprografia", "Atendimento", "Selecione"],
+            state="readonly"
+        )
+        self.setor_atividade.current(3)
+        #local onde ela vai ficar
+        self.setor_atividade.place(x=self.combobox_x, y=self.combobox_y, width=self.combobox_width, height=self.combobox_height)
+
+
+
+        self.tela_atividade_image_image_2 = PhotoImage(
+            file=self.relative_to_assets("image_2.png"))
+        self.tela_atividade_image_2 = self.canvas_tela_atividade.create_image(
+            543.0,
+            206.0,
+            image=self.tela_atividade_image_image_2
+        )
+
+        #tamanho da combobox igual o da janela acima 
+        self.combobox_width = 250
+        self.combobox_height = 45
+
+    # coordenadas para centralizar no ponto (223, 206)
+        self.combobox_x2 = 543 - self.combobox_width / 2
+        self.combobox_y2 = 206 - self.combobox_height / 2
+        #configuração da combobox
+        self.tipo_atividade = ttk.Combobox(
+            self.windowtela_atividade,
+            values=["Horas", "Quantidade", "Selecione"],
+            state="readonly"
+        )
+        self.tipo_atividade.current(2)
+        #local onde ela vai ficar
+        self.tipo_atividade.place(x=self.combobox_x2, y=self.combobox_y2, width=self.combobox_width, height=self.combobox_height)
+
+        self.canvas_tela_atividade.create_text(
+            100.0,
+            61.0,
+            anchor="nw",
+            text="Nova atividade",
+            fill="#000000",
+            font=("Inter Medium", 25 * -1)
+        )
+
+        self.tela_atividade_button_image_3 = PhotoImage(
+            file=self.relative_to_assets("button_3.png"))
+        self.tela_atividade_button_3 = Button(
+            image=self.tela_atividade_button_image_3,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_3 clicked"),
+            relief="flat"
+        )
+        self.tela_atividade_button_3.place(
+            x=410.0,
+            y=534.0,
+            width=122.0,
+            height=43.0
+        )
+        self.windowtela_atividade.mainloop()
+    def relative_to_assets(self, path: str) -> Path:
+        return self.ASSETS_PATH / Path(path)
+    def cadastrar_atividade(self):
+        conexao = conectar()
+        self.nome = self.nome_nova_atividade.get()
+        self.tipo = self.tipo_atividade.get()
+        self.setor = self.setor_atividade.get()
+        cursor = conexao.cursor()
+
+        if not self.nome or self.tipo == "Selecione" or not self.tipo or self.setor == "Selecione" or not self.setor:
+            messagebox.showerror("Erro!", "Preencha todas as lacunas")
+            conexao.close()
+        else:
+            cursor.execute(
+                "INSERT INTO atividades_padrao (nome, tipo, setor) VALUES (%s, %s, %s)",
+                (self.nome, self.tipo, self.setor)
+            )
+            conexao.commit()
+            messagebox.showinfo("Feito!", "Atividade Cadastrada!") 
+            conexao.close()
+
 
 if __name__ == "__main__":
     TelaAdministrador()
