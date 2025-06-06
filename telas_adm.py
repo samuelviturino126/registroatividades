@@ -5,9 +5,29 @@ from tkinter import ttk
 from conectar import conectar
 import subprocess
 from tkinter import messagebox
+import matplotlib.pyplot as plt
 
 #essa função abre a primeira tela
 def abrirtelaadm():        
+
+# Dados
+    labels = ['A', 'B', 'C', 'D']
+    sizes = [25, 35, 20, 20]
+    colors = ['#555555', '#888888', '#AAAAAA', '#CCCCCC']
+
+    # Criar gráfico
+    fig, ax = plt.subplots(figsize=(3.7, 2.19), dpi=100)
+    ax.pie(
+        sizes,
+        labels=None,
+        colors=colors,
+        startangle=90,
+        wedgeprops={'width': 0.4}  # largura da fatia (faz o "buraco")
+    )
+    ax.axis('equal')  # Mantém o círculo redondo
+
+    plt.show()
+
     #Primeira parte é para conseguir as atividades do mes e do dia e salvar
     conexao = conectar()
     if conexao:

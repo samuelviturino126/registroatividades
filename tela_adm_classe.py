@@ -7,6 +7,10 @@ from datetime import datetime
 from pathlib import Path
 from tkinter import messagebox
 import psycopg2
+import matplotlib.pyplot as plt
+from PIL import Image, ImageTk
+import io
+
 
 class TelaAdministrador:
     def __init__(self):
@@ -49,6 +53,7 @@ class TelaAdministrador:
             outline="")
 
         self.canvas_tela_adm.create_rectangle(
+            #retangulo do lado direito
             1005.0,
             558.0,
             1375.0,
@@ -57,6 +62,7 @@ class TelaAdministrador:
             outline="")
 
         self.canvas_tela_adm.create_rectangle(
+            #retangulo do centro
             573.0,
             558.0,
             943.0,
@@ -65,13 +71,14 @@ class TelaAdministrador:
             outline="")
 
         self.canvas_tela_adm.create_rectangle(
+            #retangulo da esquerda
             150.0,
             558.0,
             520.0,
             777.0,
             fill="#D9D9D9",
             outline="")
-
+        
         self.canvas_tela_adm.create_rectangle(
             735.0,
             158.0,
@@ -205,6 +212,7 @@ class TelaAdministrador:
             width=157.0,
             height=42.0
         )
+        self.graficos()
         self.window_tela_adm.mainloop()
     def relative_to_assets(self, path: str) -> Path:
         return self.ASSETS_PATH / Path(path)
@@ -233,10 +241,31 @@ class TelaAdministrador:
     def voltar(self):
         self.window_tela_adm.destroy()
         subprocess.run(["python", "tela_login_classe.py"])
+    
     def graficos(self):
-        #coletar dados
-        #criar gráficos
-        pass
+        # Dados do gráfico 
+        self.labels = ['A', 'B', 'C', 'D'] #Essas labels vão ser as atividades padrao por setor
+        self.sizes = [10, 20, 30, 40] #Vai procurar o setor de cada label nas realizadas e retornar a contagem dos feitos
+        self.colors = ['#555555', '#888888', '#AAAAAA', '#CCCCCC'] #cores padrão para o programa (cinza)
+
+        # Cria a figura do gráfico
+        fig, ax = plt.subplots(figsize=(3.7, 2.19), dpi=100) 
+        ax.pie(self.sizes, labels=self.labels, colors=self.colors, autopct='%1.1f%%', startangle=140)
+        ax.axis('equal') #padrão porém posso aumentar
+
+        # Salva a figura em memória como imagem
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png', bbox_inches='tight', transparent=True)
+        buf.seek(0)
+
+        # Carrega a imagem com PIL
+        img = Image.open(buf)
+        self.tk_image = ImageTk.PhotoImage(img)
+
+        # Desenha a imagem dentro do canvas (por cima do retângulo)
+        self.canvas_tela_adm.create_image(600, 570, anchor='nw', image=self.tk_image)
+
+        plt.close(fig)  # Evita vazamento de memória
     
 class TelatividadesADM:
     #caminhos
