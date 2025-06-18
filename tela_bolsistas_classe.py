@@ -7,6 +7,8 @@ from datetime import datetime
 from pathlib import Path
 from tkinter import messagebox
 import psycopg2
+from tkcalendar import DateEntry
+from datetime import datetime, date
 
 
 
@@ -229,7 +231,7 @@ class TelaBolsista():
             JOIN atividades_padrao AS ap ON au.atividade_id = ap.id
             WHERE au.usuario_id = %s;
         """, (self.id, ))
-        self.dados = cursor.fetchall()
+        self.dados = [linha[0] for linha in cursor.fetchall()]
         conexao.close()
     def atividades_do_dia_bolsista(self):
         pass
@@ -247,13 +249,14 @@ class TelaRegistrar():
         self.nome = nome
         conexao = conectar()
         cursor = conexao.cursor()
+        #essa função coleta os id's de cada atividade associada a cada bolsista
         cursor.execute("""
             SELECT ap.nome
             FROM atividade_por_usuarios AS au
             JOIN atividades_padrao AS ap ON au.atividade_id = ap.id
             WHERE au.usuario_id = %s;
         """, (self.id, ))
-        self.dados = cursor.fetchall()
+        self.dados = [linha[0] for linha in cursor.fetchall()] 
         conexao.close()
         #tela
         self.window_telaregistrar = Tk()
@@ -414,17 +417,40 @@ class TelaRegistrar():
         
     def registrar_atividade_bolsista(self):
         self.atividade_feita = self.atividade.get()
-        self.quantidade = self.entry_quantidade.get()
+        self.quantidade = self.entry_quantidade.get()   
         self.data = self.entry_data.get()
+        from datetime import datetime
+        formatos_aceitos = ["%d/%m/%Y", "%d-%m-%Y"]
+        self.data_str = self.entry_data.get()
+        self.data = None
+        for formato in formatos_aceitos:
+            try:
+                self.data = datetime.strptime(self.data_str, formato).date()
+                break  # para no primeiro formato que der certo
+            except ValueError:
+                continue
+        if self.data is None:
+            messagebox.showerror("Erro de Data", "Formato inválido. Use DD/MM/AAAA ou DD-MM-AAAA.")
+            return
+        if self.data > date.today():
+            messagebox.showerror("Erro de Data", "Não é permitido registrar uma atividade com data futura.")
+            return
+
         conexao = conectar()
         cursor = conexao.cursor()
         cursor.execute("""
             SELECT id
             FROM atividades_padrao
             WHERE nome = %s;
-            """, (self.atividade_feita,))
-        self.id_atividade = cursor.fetchone()
-        print("%s", self.id_atividade)
+            """, (self.atividade_feita,)) #aqui nos obtemos o ID pelo nome da atividade
+        resultado_id = cursor.fetchone()
+        self.id_atividade = resultado_id[0]
+        cursor.execute("SELECT setor FROM atividades_padrao WHERE id = %s;", (self.id_atividade, )) #Aqui obtemos o setor da atividade pelo ID
+        resultado_setor = cursor.fetchone()
+        self.setor_atividade = resultado_setor[0]
+        cursor.execute("INSERT INTO atividades_realizadas (usuario_id, atividade_id, data, inteiro, setor) VALUES (%s, %s, %s, %s, %s)", (self.id, self.id_atividade, self.data, self.quantidade, self.setor_atividade))
+        conexao.commit()
+        conexao.close()
 
 
 

@@ -196,7 +196,7 @@ class TelaAdministrador:
             width=76.0,
             height=22.0
         )
-
+        #botão 4 = relatórios
         self.button_image_4 = PhotoImage(
             file=self.relative_to_assets("button_relatorios_adm.png"))
         self.button_4 = Button(
@@ -244,8 +244,8 @@ class TelaAdministrador:
     
     def graficos(self):
         # Dados do gráfico 
-        self.labels = ['A', 'B', 'C', 'D'] #Essas labels vão ser as atividades padrao por setor
-        self.sizes = [10, 20, 30, 40] #Vai procurar o setor de cada label nas realizadas e retornar a contagem dos feitos
+        self.labels = ['A', 'B', 'C', 'D', 'F', 'G', 'H'] #Essas labels vão ser as atividades padrao por setor
+        self.sizes = [10, 20, 30, 38, 0.2, 0.5, 1.5] #Vai procurar o setor de cada label nas realizadas e retornar a contagem dos feitos
         self.colors = ['#555555', '#888888', '#AAAAAA', '#CCCCCC'] #cores padrão para o programa (cinza)
 
         # Cria a figura do gráfico

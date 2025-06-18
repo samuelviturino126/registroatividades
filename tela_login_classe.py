@@ -41,7 +41,7 @@ class TelaLogin:
 
         self.entry_senha_img = PhotoImage(file=self.relative_to_assets("entry_login.png"))
         self.canvas.create_image(434.5, 256.0, image=self.entry_senha_img)
-        self.entrada_senha = Entry(bd=0, bg="#D9D9D9", fg="#000716", highlightthickness=0, show="*")
+        self.entrada_senha = Entry(bd=0, bg="#D9D9D9", fg="#000716", font=fonte_personalizada, highlightthickness=0, show=" * ")
         self.entrada_senha.place(x=205, y=235, width=459, height=40)
 
         # Botões
