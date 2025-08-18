@@ -16,4 +16,4 @@ def conectar():
     except Exception as e:
         print("Erro", e)
         return None
-conectar() 
+ 
