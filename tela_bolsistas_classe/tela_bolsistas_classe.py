@@ -11,7 +11,6 @@ from tkcalendar import DateEntry
 from datetime import datetime, date
 
 
-
 class TelaBolsista():
     def __init__(self, id, nome):
         self.id = id
